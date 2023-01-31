@@ -17,6 +17,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -89,6 +90,12 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.coil.kt.compose)
+
+    implementation(platform("com.google.firebase:firebase-bom:31.2.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)

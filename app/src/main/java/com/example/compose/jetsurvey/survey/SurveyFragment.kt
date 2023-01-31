@@ -16,8 +16,10 @@
 
 package com.example.compose.jetsurvey.survey
 
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +44,8 @@ import androidx.fragment.app.viewModels
 import com.example.compose.jetsurvey.R
 import com.example.compose.jetsurvey.theme.JetsurveyTheme
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class SurveyFragment : Fragment() {
 
@@ -132,25 +136,30 @@ class SurveyFragment : Fragment() {
                                         )
                                     }
 
-                                    SurveyQuestion.SUPERHERO -> SuperheroQuestion(
-                                        selectedAnswer = viewModel.superheroResponse,
-                                        onOptionSelected = viewModel::onSuperheroResponse,
-                                        modifier = modifier,
-                                    )
+                                    SurveyQuestion.SUPERHERO -> {
+                                        SuperheroQuestion(
+                                            selectedAnswer = viewModel.superheroResponse,
+                                            onOptionSelected = viewModel::onSuperheroResponse,
+                                            modifier = modifier,
+                                        )
+                                    }
 
-                                    SurveyQuestion.LAST_TAKEAWAY -> TakeawayQuestion(
-                                        dateInMillis = viewModel.takeawayResponse,
-                                        onClick = ::showTakeawayDatePicker,
-                                        modifier = modifier,
-                                    )
+                                    SurveyQuestion.LAST_TAKEAWAY -> {
+                                        TakeawayQuestion(
+                                            dateInMillis = viewModel.takeawayResponse,
+                                            onClick = ::showTakeawayDatePicker,
+                                            modifier = modifier,
+                                        )
+                                    }
 
-                                    SurveyQuestion.FEELING_ABOUT_SELFIES ->
+                                    SurveyQuestion.FEELING_ABOUT_SELFIES -> {
                                         FeelingAboutSelfiesQuestion(
                                             value = viewModel.feelingAboutSelfiesResponse,
                                             onValueChange =
                                             viewModel::onFeelingAboutSelfiesResponse,
                                             modifier = modifier,
                                         )
+                                    }
 
 //                                    SurveyQuestion.TAKE_SELFIE -> TakeSelfieQuestion(
 //                                        imageUri = viewModel.selfieUriResponse,

@@ -16,12 +16,16 @@
 
 package com.example.compose.jetsurvey.survey
 
+import android.content.ContentValues
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.compose.jetsurvey.survey.question.Superhero
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 const val simpleDateFormatPattern = "EEE, MMM d"
 
@@ -78,6 +82,7 @@ class SurveyViewModel(
     val isNextEnabled: Boolean
         get() = _isNextEnabled.value
 
+
     /**
      * Returns true if the ViewModel handled the back press (i.e., it went back one question)
      */
@@ -108,6 +113,26 @@ class SurveyViewModel(
 
     fun onDonePressed() {
         _isSurveyComplete.value = true
+        val db = Firebase.firestore
+        val user = hashMapOf(
+            "time" to freeTimeResponse,
+            "superhero" to superheroResponse,
+            "takeaway" to takeawayResponse,
+            "selfies" to feelingAboutSelfiesResponse
+        )
+
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d(
+                    ContentValues.TAG,
+                    "DocumentSnapshot added with ID: ${documentReference.id}"
+                )
+            }
+            .addOnFailureListener { e ->
+                Log.w(ContentValues.TAG, "Error adding document", e)
+            }
+
     }
 
     fun onFreeTimeResponse(selected: Boolean, answer: Int) {
